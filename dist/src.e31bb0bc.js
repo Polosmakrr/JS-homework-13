@@ -21565,15 +21565,14 @@ class FetchService {
   fetchImg() {
     console.log('this', this);
     return fetch(`${BASE_URL}/?image_type=photo&orientation=horizontal&q=${this.searchParam}&page=${this.page}&per_page=12&key=${API_KEY}`).then(responce => responce.json()).then(data => {
-      if (data.total === 0) {
-        console.log('Mistake');
-        return;
-      } else {
-        console.log('data', data);
-        this.incrementPage();
-        console.log('after', this);
+      if (data.total != 0) {
+        this.incrementPage(); //    console.log('after', this);
+
         return data.hits;
       }
+
+      console.log('Mistake');
+      return;
     });
   }
 
@@ -21596,7 +21595,110 @@ class FetchService {
 }
 
 exports.default = FetchService;
-},{}],"index.js":[function(require,module,exports) {
+},{}],"../node_modules/basiclightbox/dist/basicLightbox.min.js":[function(require,module,exports) {
+var define;
+var global = arguments[3];
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{("undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this).basicLightbox=e()}}((function(){return function e(n,t,o){function r(c,u){if(!t[c]){if(!n[c]){var s="function"==typeof require&&require;if(!u&&s)return s(c,!0);if(i)return i(c,!0);var a=new Error("Cannot find module '"+c+"'");throw a.code="MODULE_NOT_FOUND",a}var l=t[c]={exports:{}};n[c][0].call(l.exports,(function(e){return r(n[c][1][e]||e)}),l,l.exports,e,n,t,o)}return t[c].exports}for(var i="function"==typeof require&&require,c=0;c<o.length;c++)r(o[c]);return r}({1:[function(e,n,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.create=t.visible=void 0;var o=function(e){var n=arguments.length>1&&void 0!==arguments[1]&&arguments[1],t=document.createElement("div");return t.innerHTML=e.trim(),!0===n?t.children:t.firstChild},r=function(e,n){var t=e.children;return 1===t.length&&t[0].tagName===n},i=function(e){return null!=(e=e||document.querySelector(".basicLightbox"))&&!0===e.ownerDocument.body.contains(e)};t.visible=i;t.create=function(e,n){var t=function(e,n){var t=o('\n\t\t<div class="basicLightbox '.concat(n.className,'">\n\t\t\t<div class="basicLightbox__placeholder" role="dialog"></div>\n\t\t</div>\n\t')),i=t.querySelector(".basicLightbox__placeholder");e.forEach((function(e){return i.appendChild(e)}));var c=r(i,"IMG"),u=r(i,"VIDEO"),s=r(i,"IFRAME");return!0===c&&t.classList.add("basicLightbox--img"),!0===u&&t.classList.add("basicLightbox--video"),!0===s&&t.classList.add("basicLightbox--iframe"),t}(e=function(e){var n="string"==typeof e,t=e instanceof HTMLElement==1;if(!1===n&&!1===t)throw new Error("Content must be a DOM element/node or string");return!0===n?Array.from(o(e,!0)):"TEMPLATE"===e.tagName?[e.content.cloneNode(!0)]:Array.from(e.children)}(e),n=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};if(null==(e=Object.assign({},e)).closable&&(e.closable=!0),null==e.className&&(e.className=""),null==e.onShow&&(e.onShow=function(){}),null==e.onClose&&(e.onClose=function(){}),"boolean"!=typeof e.closable)throw new Error("Property `closable` must be a boolean");if("string"!=typeof e.className)throw new Error("Property `className` must be a string");if("function"!=typeof e.onShow)throw new Error("Property `onShow` must be a function");if("function"!=typeof e.onClose)throw new Error("Property `onClose` must be a function");return e}(n)),c=function(e){return!1!==n.onClose(u)&&function(e,n){return e.classList.remove("basicLightbox--visible"),setTimeout((function(){return!1===i(e)||e.parentElement.removeChild(e),n()}),410),!0}(t,(function(){if("function"==typeof e)return e(u)}))};!0===n.closable&&t.addEventListener("click",(function(e){e.target===t&&c()}));var u={element:function(){return t},visible:function(){return i(t)},show:function(e){return!1!==n.onShow(u)&&function(e,n){return document.body.appendChild(e),setTimeout((function(){requestAnimationFrame((function(){return e.classList.add("basicLightbox--visible"),n()}))}),10),!0}(t,(function(){if("function"==typeof e)return e(u)}))},close:c};return u}},{}]},{},[1])(1)}));
+},{}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"../node_modules/basiclightbox/dist/basicLightbox.min.css":[function(require,module,exports) {
+
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"js/modal.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = onClickImage;
+
+var basicLightbox = _interopRequireWildcard(require("basiclightbox"));
+
+require("basiclightbox/dist/basicLightbox.min.css");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// console.log(basicLightbox);
+function onClickImage(e) {
+  if (e.target.nodeName !== 'IMG') {
+    return;
+  }
+
+  const lightboxImageUrl = e.target.dataset.source;
+  const instance = basicLightbox.create(`<img src="${lightboxImageUrl}">`);
+  instance.show();
+}
+},{"basiclightbox":"../node_modules/basiclightbox/dist/basicLightbox.min.js","basiclightbox/dist/basicLightbox.min.css":"../node_modules/basiclightbox/dist/basicLightbox.min.css"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _lodash = require("lodash");
@@ -21604,6 +21706,8 @@ var _lodash = require("lodash");
 var _imgCard = _interopRequireDefault(require("./img-card.hbs"));
 
 var _fetch = _interopRequireDefault(require("./js/fetch"));
+
+var _modal = _interopRequireDefault(require("./js/modal"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21613,42 +21717,48 @@ const refs = {
   galleryBlock: document.querySelector('.gallery'),
   btn: document.querySelector('button')
 };
-const fetchService = new _fetch.default();
-refs.searchInputValue.addEventListener('blur', onSearchBlur);
+const fetchService = new _fetch.default(); // refs.searchInputValue.addEventListener('blur', onSearchBlur);
+
 refs.searchValue.addEventListener('submit', onSearchSubmit);
 refs.btn.addEventListener('click', onSearchMore);
+refs.galleryBlock.addEventListener('click', _modal.default);
 
 function onSearchSubmit(ev) {
   ev.preventDefault();
   fetchService.query = ev.currentTarget.elements.query.value;
 
-  if (fetchService.query === '') {
+  if (fetchService.query != '') {
+    fetchService.resetPage();
     clearPage();
-    removeBtn();
+    fetchService.fetchImg().then(renderGallery);
     return;
   }
 
-  fetchService.resetPage();
   clearPage();
-  fetchService.fetchImg().then(renderGallery);
-}
+  removeBtn();
+  return;
+} // function onSearchBlur(ev) {
+//     fetchService.query = ev.currentTarget.value;
+//      if (fetchService.query === '') {
+//         clearPage();
+//         removeBtn();
+//         return;
+//     }
+//     fetchService.resetPage();
+//     clearPage();
+//     fetchService.fetchImg().then(renderGallery);  
+// }
 
-function onSearchBlur(ev) {
-  fetchService.query = ev.currentTarget.value;
-
-  if (fetchService.query === '') {
-    clearPage();
-    removeBtn();
-    return;
-  }
-
-  fetchService.resetPage();
-  clearPage();
-  fetchService.fetchImg().then(renderGallery);
-}
 
 function onSearchMore() {
   fetchService.fetchImg().then(renderGallery);
+  setTimeout(function () {
+    const element = document.getElementById('1');
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end'
+    });
+  }, 1000);
 }
 
 function renderGallery(hits) {
@@ -21660,8 +21770,8 @@ function renderGallery(hits) {
   }
 
   addBtn();
-  const gallery = (0, _imgCard.default)(hits);
-  console.log('gallery', gallery);
+  const gallery = (0, _imgCard.default)(hits); // console.log('gallery', gallery);
+
   refs.galleryBlock.insertAdjacentHTML('beforeend', gallery);
 }
 
@@ -21676,7 +21786,7 @@ function addBtn() {
 function removeBtn() {
   refs.btn.classList.add('none');
 }
-},{"lodash":"../node_modules/lodash/lodash.js","./img-card.hbs":"img-card.hbs","./js/fetch":"js/fetch.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"lodash":"../node_modules/lodash/lodash.js","./img-card.hbs":"img-card.hbs","./js/fetch":"js/fetch.js","./js/modal":"js/modal.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

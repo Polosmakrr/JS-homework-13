@@ -15,16 +15,16 @@ export default class FetchService {
    )
        
        .then(data => {
-           if (data.total === 0) {
+           if (data.total != 0) {
+                this.incrementPage();
+            //    console.log('after', this);
+               return data.hits;
+               
+           }
+    
                console.log('Mistake');
                return
-           }
-           else {
-               console.log('data', data);
-               this.incrementPage();
-               console.log('after', this);
-               return data.hits;
-           }
+           
        })
     }
 
